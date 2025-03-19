@@ -4,6 +4,7 @@ import pygame, sys, config
 
 def init_game():
     pygame.init()
+    pygame.font.init()
     screen = pygame.display.set_mode((config.WINDOW_WIDTH, config.WINDOW_HEIGHT))
     pygame.display.set_caption(config.TITLE)
     return screen
@@ -28,9 +29,16 @@ def draw_rect(screen, rect, color, thickness):
 def draw_circle(screen, center, radius, color, thickness):
     pygame.draw.circle(screen, color, center, radius, thickness)
 
-def draw_text(screen, text, font, text_col, x, y):
+def draw_text(screen, text, font_size, text_col, text_pos, font_name=None, bold=False, italic=False):
+    if font_name:
+        font = pygame.font.Font(font_name, font_size)
+    else:
+        font = pygame.font.Font(None, font_size)
+
+    font.set_bold(bold)
+    font.set_italic(italic)
     img = font.render(text, True, text_col)
-    screen.blit(img, (x, y))
+    screen.blit(img, text_pos)
 
 
 
@@ -39,22 +47,36 @@ def main():
     clock = pygame.time.Clock()
     running = True
 
-    text_font = pygame.font.SysFont('Arial', 30)
+    left = "left"
+    right = 'right'
+    up = 'up'
+    down = 'down'
+    text_position = [350, 350]
+    text = ''
+    
     while running:
         running = handle_events()
         screen.fill(config.COLOR_WHITE)
 
-        draw_text(screen, 'Hello world', text_font, config.COLOR_BLACK, 220, 150)
+
+        draw_text(screen, text, 30, config.COLOR_BLACK, text_position)
+
+
+        
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_w]:
-            item_position[1] -= 4
+            text_position[1] -= 4
+            text = up
         if keys[pygame.K_s]:
-            item_position[1] += 4
+            text_position[1] += 4
+            text = down
         if keys[pygame.K_a]:
-            item_position[0] -= 4
+            text_position[0] -= 4
+            text = left
         if keys[pygame.K_d]:
-            item_position[0] += 4
+            text_position[0] += 4
+            text = right
 
         # Calling a grid (Comment this out after you are done coding)
         grid(screen)
