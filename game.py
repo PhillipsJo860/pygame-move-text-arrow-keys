@@ -58,11 +58,8 @@ def main():
         running = handle_events()
         screen.fill(config.COLOR_WHITE)
 
-
         draw_text(screen, text, 30, config.COLOR_BLACK, text_position)
 
-
-        
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_w]:
